@@ -9,6 +9,22 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <StackPanel>
+            <TextBox Header="アプリケーションフォルダ" Text="{x:Bind PathText, Mode=OneWay}"/>
+            <ListView ItemsSource="{x:Bind Items, Mode=OneWay}" SelectedIndex="{x:Bind SelectedIndex, Mode=TwoWay}"/>
+        </StackPanel>
 
+        <Grid Background="#80000000" Visibility="{x:Bind ImageVisibility, Mode=TwoWay}">
+            <Grid Margin="100" Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <SymbolIcon Grid.Row="0" Symbol="Clear" HorizontalAlignment="Right" Margin="16" Tapped="{x:Bind ButtonClear}"/>
+                <Grid Grid.Row="1" Padding="8">
+                    <Image Source="{x:Bind ImageSource, Mode=OneWay}"/>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
