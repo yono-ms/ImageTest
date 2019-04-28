@@ -84,8 +84,39 @@ namespace ImageTest
         {
             if (index != -1)
             {
+                myCanvas.Children.Clear();
+
                 System.Diagnostics.Debug.WriteLine($"---- {Items[index]}");
                 ImageSource = new BitmapImage(new Uri(Items[index]));
+                for (int i = 0; i < 6; i++)
+                {
+                    var fileName = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Jpegs", $"{i}.jpeg");
+                    System.Diagnostics.Debug.WriteLine($"---- {fileName}");
+                    var image = new Image();
+                    image.Loaded += (s, e) =>
+                    {
+                        System.Diagnostics.Debug.WriteLine($"image.Loaded. {fileName}");
+                    };
+                    image.SizeChanged += (s, e) =>
+                    {
+                        System.Diagnostics.Debug.WriteLine($"image.SizeChanged. {fileName}");
+                    };
+                    var bitmap = new BitmapImage(new Uri(fileName));
+                    bitmap.ImageOpened += (s, e) =>
+                    {
+                        var ctl = s as BitmapImage;
+                        System.Diagnostics.Debug.WriteLine($"bitmap.ImageOpened. {fileName}");
+                        image.Width = ctl.PixelWidth * 70 / 100;
+                        image.Height = ctl.PixelHeight * 70 / 100;
+                    };
+                    image.Source = bitmap;
+                    Canvas.SetLeft(image, 100 * i);
+                    Canvas.SetTop(image, 10 * i);
+                    myCanvas.Children.Add(image);
+                }
+
+                System.Diagnostics.Debug.WriteLine($"Children.Count={myCanvas.Children.Count}");
+
                 ImageVisibility = Visibility.Visible;
             }
         }
